@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0"
+  metadata-complete="true">
+
+    <description>
+      Servlet and JSP Examples.
+    </description>
+    <display-name>Style One</display-name>
+
+
+<servlet>
+<servlet-name>ServletOne</servlet-name>
+<servlet-class>com.tanishq.hr.servlets.ServletOne</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ServletOne</servlet-name>
+<url-pattern>/servletOne</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>ServletTwo</servlet-name>
+<servlet-class>com.tanishq.hr.servlets.ServletTwo</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ServletTwo</servlet-name>
+<url-pattern>/servletTwo</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>ServletThree</servlet-name>
+<servlet-class>com.tanishq.hr.servlets.ServletThree</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ServletThree</servlet-name>
+<url-pattern>/servletThree</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>ServletThreeJSON</servlet-name>
+<servlet-class>com.tanishq.hr.servlets.ServletThreeJSON</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ServletThreeJSON</servlet-name>
+<url-pattern>/servletThreeJSON</url-pattern>
+</servlet-mapping>
+
+</web-app>
