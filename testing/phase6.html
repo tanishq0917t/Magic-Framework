@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Something</title>
+    <script>
+      var panels=[];
+      var expandedIndex=-1;
+      function accordianHeadingClicked(i)
+      {
+        //alert('Heading Clicked: '+i)
+        if(expandedIndex!=-1) panels[expandedIndex].style.display='none';
+        panels[i+1].style.display=panels[i+1].oldDisplay;
+        expandedIndex=i+1;
+      }
+      function doit()
+      {
+        //alert('do it');
+        alert(document.getElementById('mymy'));
+        let accord=document.getElementById('mymy');
+        let children=accord.childNodes;
+        for(let i=0;i<children.length;i++)
+        {
+          if(children[i].nodeName=="H3")
+          {
+            panels[panels.length]=children[i];
+          }
+          if(children[i].nodeName=="DIV")
+          {
+            panels[panels.length]=children[i];
+          }
+        }
+        if(panels.length%2!=0) throw "Heading and Division malformed to create Accordian";
+        for(let i=0;i<panels.length;i+=2)
+        {
+          if(panels[i].nodeName!="H3") throw "Heading and Division malformed to create Accordian";
+          if(panels[i+1].nodeName!="DIV") throw "Heading and Division malformed to create Accordian";
+        }
+        function createClickHandler(i)
+        {
+          return function(){
+            accordianHeadingClicked(i);
+          }
+        }
+        for(let i=1;i<panels.length;i+=2)
+        {
+          panels[i-1].onclick=createClickHandler(i-1);
+          /*
+            createClickHandler() function will return an address of an annonymous function which will be called on clicking the ith heading
+            annonymous function will call the accordianHeadingClicked function when the heading is clicked
+            --Concept of Closure--
+          */
+          //panels[i].style.visibility="hidden";
+          panels[i].oldDisplay=panels[i].style.display;
+          panels[i].style.display="none";
+        }
+        //alert(panels[1].nodeName);
+      }
+      window.addEventListener('load',doit)
+    </script>
+  </head>
+  <body>
+    <div id="mymy">
+      <h3>Heading 1</h3>
+      <div>
+        1 Something Something <br>
+        2 Something Something <br>
+        3 Something Something <br>
+        4 Something Something <br>
+        5 Something Something <br>
+      </div>
+      <h3>Heading 2</h3>
+      <div>
+        11 Something Something <br>
+        22 Something Something <br>
+        33 Something Something <br>
+        44 Something Something <br>
+        55 Something Something <br>
+      </div>
+      <h3>Heading 3</h3>
+      <div>
+        111 Something Something <br>
+        222 Something Something <br>
+        333 Something Something <br>
+        444 Something Something <br>
+        555 Something Something <br>
+      </div>
+    </div>
+    <br />
+    <a href="/something/index.html">Home</a>
+  </body>
+</html>
