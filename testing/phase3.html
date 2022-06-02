@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Something</title>
+    <script>
+        //TMJRock part starts here
+
+      function $$$(cid) 
+      {
+          //alert(typeof cid);
+          let element=document.getElementById(cid);
+          if(!element) throw "Invalid CID: "+cid;
+          return new TMJRockElement(element);
+      }
+      function TMJRockElement(element)
+      {
+          this.element=element;
+          this.html=function(content)
+          {
+              if((typeof this.element.innerHTML)=="string")
+              {
+                  if((typeof content)=="string")
+                  {
+                      this.element.innerHTML=content;
+                  }
+                  return this.element.innerHTML;
+              }
+              return null;
+          }
+          this.value=function(content)
+          {
+            if(typeof this.element.value=="string")
+              {
+                  if((typeof content)=="string")
+                  {
+                      this.element.value=content;
+                  }
+                  return this.element.value;
+              }
+              return null;
+          }
+      }
+      $$$.ajax = function (jsonObject) 
+      {
+        if (!jsonObject["url"]) throw "url property is missing in call to ajax";
+        let url = jsonObject["url"];
+        if (typeof url != "string")
+          throw "url property should be of string type in call to ajax";
+        let methodType = "GET";
+        if (jsonObject["methodType"]) 
+        {
+          methodType = jsonObject["methodType"];
+          if (typeof methodType != "string")
+            throw "methodType property should be of string type in call to ajax";
+          methodType = methodType.toUpperCase();
+          if(["GET","POST"].includes(methodType)==false) throw "method type should be GET/POST in call to ajax";
+        }
+        let onSuccess=null;
+        if(jsonObject["success"]) 
+        {
+            onSuccess=jsonObject["success"];
+            if((typeof onSuccess)!="function") throw "success property should be of function type in call to ajax";
+        }
+        let onFailure=null;
+        if(jsonObject["failure"]) 
+        {
+            onFailure=jsonObject["failure"];
+            if((typeof onFailure)!="function") throw "failure property should be of function type in call to ajax";
+        }
+        if(methodType=="GET")
+        {
+            var xmlHttpRequest=new XMLHttpRequest();
+            xmlHttpRequest.onreadystatechange=function()
+            {
+                if(this.readyState==4)
+                {
+                    if(this.status==200)
+                    {
+                        if(onSuccess) onSuccess(this.responseText);
+                    }
+                    else
+                    {
+                        if(onFailure) onFailure();
+                    }
+                }
+            }
+            if(jsonObject["data"])
+            {
+              let jsonData=jsonObject["data"];
+              let queryString="";
+              let qsName;
+              let qsValue;
+              let x=0;
+              for(k in jsonData)
+              {
+                //alert(k);
+                if(x==0) queryString="?"
+                if(x>0) queryString+="&";
+                x++;
+                qsName=encodeURI(k);
+                qsValue=encodeURI(jsonData[k]);
+                queryString=queryString+qsName+"="+qsValue;
+              }
+              //alert(queryString);
+              url+=queryString;
+            }
+            xmlHttpRequest.open('GET',url,true);
+            xmlHttpRequest.send();
+        }
+        if(methodType=="POST")
+        {
+
+        }
+      };
+
+      //TMJRock part ends here
+
+
+      function getDesignation() 
+      {
+        let titleSpan=$$$("title");
+        titleSpan.html("");
+        let code=$$$("cc").value();
+        $$$.ajax({
+          url: "servletTwo",
+          data: {
+            "code":code,
+          },
+          methodType: "Get",
+          success: function (responseData) {
+            if(responseData=="Invalid")
+            {
+                alert("Invalid Designation Code");
+            }
+            else
+            {
+                var splits=responseData.split(",");
+                titleSpan.html(splits[1]);
+            }
+          },
+          failure: function () 
+          {
+            alert("Some Problem");
+          },
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Get Type Request</h1>
+    Enter Code: <input type="text" id="cc" name="cc" />
+    <button onClick="getDesignation()">Get Designation</button><br />
+    Title: <span id="title"></span><br />
+    <a href="/TMJRock/index.html">Home</a>
+  </body>
+</html>
