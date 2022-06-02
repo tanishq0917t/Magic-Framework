@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Something</title>
+    <script>
+      //TMJRock part starts here
+
+      function $$$(cid) 
+      {
+
+      }
+      $$$.ajax = function (jsonObject) 
+      {
+        if (!jsonObject["url"]) throw "url property is missing in call to ajax";
+        let url = jsonObject["url"];
+        if (typeof url != "string")
+          throw "url property should be of string type in call to ajax";
+        let methodType = "GET";
+        if (jsonObject["methodType"]) 
+        {
+          methodType = jsonObject["methodType"];
+          if (typeof methodType != "string")
+            throw "methodType property should be of string type in call to ajax";
+          methodType = methodType.toUpperCase();
+          if(["GET","POST"].includes(methodType)==false) throw "method type should be GET/POST in call to ajax";
+        }
+        let onSuccess=null;
+        if(jsonObject["success"]) 
+        {
+            onSuccess=jsonObject["success"];
+            if((typeof onSuccess)!="function") throw "success property should be of function type in call to ajax";
+        }
+        let onFailure=null;
+        if(jsonObject["failure"]) 
+        {
+            onFailure=jsonObject["failure"];
+            if((typeof onFailure)!="function") throw "failure property should be of function type in call to ajax";
+        }
+        if(methodType=="GET")
+        {
+            var xmlHttpRequest=new XMLHttpRequest();
+            xmlHttpRequest.onreadystatechange=function()
+            {
+                if(this.readyState==4)
+                {
+                    if(this.status==200)
+                    {
+                        if(onSuccess) onSuccess(this.responseText);
+                    }
+                    else
+                    {
+                        if(onFailure) onFailure();
+                    }
+                }
+            }
+            xmlHttpRequest.open('GET',url,true);
+            xmlHttpRequest.send();
+        }
+        if(methodType=="POST")
+        {
+
+        }
+      };
+
+      //TMJRock part ends here
+      function populateDesignations() {
+        $$$.ajax({
+          url: "servletOne",
+          methodType: "Get",
+          success: function (responseData) {
+            //alert(responseData);
+            var element=document.getElementById("designationCodes");
+            var designations=responseData.split(",");
+            var obj;
+            for(let i=0;i<designations.length;i+=2)
+            {
+                obj=document.createElement("option");
+                obj.value=designations[i];
+                obj.text=designations[i+1];
+                element.appendChild(obj);
+            }
+          },
+          failure: function () {
+            alert("Some Problem");
+          },
+        });
+      }
+      window.addEventListener("load", populateDesignations);
+    </script>
+  </head>
+  <body>
+    <h1>Get Type Request</h1>
+    <select id="designationCodes"></select>
+    <br />
+    <a href="/TMJRock/index.html">Home</a>
+  </body>
+</html>
